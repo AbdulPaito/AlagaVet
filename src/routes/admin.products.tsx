@@ -28,15 +28,15 @@ type Product = {
   id: string;
   name: string;
   description: string;
-  price: number;
+  price: number | "";
   category: string;
   image: string;
-  stock: number;
+  stock: number | "";
   labels: string[];
 };
 
 const empty: Omit<Product, "id"> = {
-  name: "", description: "", price: 0, category: "chicken", image: "", stock: 0, labels: [],
+  name: "", description: "", price: "", category: "", image: "", stock: "", labels: [],
 };
 
 const categoryColors: Record<string, string> = {
@@ -223,7 +223,7 @@ function ProductsPage() {
                     <div className={`image-fallback flex h-full items-center justify-center text-muted-foreground ${p.image ? 'hidden' : ''}`}>
                       <ImageIcon className="h-6 w-6 sm:h-8 sm:w-8" />
                     </div>
-                    {p.stock <= 10 && p.stock > 0 && (
+                    {typeof p.stock === 'number' && p.stock <= 10 && p.stock > 0 && (
                       <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-amber-500 text-white text-xs font-medium">
                         Low stock: {p.stock}
                       </div>
@@ -238,7 +238,7 @@ function ProductsPage() {
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-xs sm:text-sm truncate">{p.name}</h3>
-                        <p className="text-sm sm:text-base font-bold text-emerald-600">₱{Number(p.price).toLocaleString()}</p>
+                        <p className="text-sm sm:text-base font-bold text-emerald-600">₱{p.price ? Number(p.price).toLocaleString() : '0'}</p>
                       </div>
                       <span className={`px-2 py-1 rounded-md text-xs font-medium capitalize border ${categoryClass}`}>
                         {p.category}
@@ -247,7 +247,7 @@ function ProductsPage() {
                     <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{p.description}</p>
                     <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
                       <span className="inline-flex items-center gap-1">
-                        Stock: <span className={p.stock <= 10 ? 'text-amber-600 font-medium' : ''}>{p.stock}</span>
+                        Stock: <span className={typeof p.stock === 'number' && p.stock <= 10 ? 'text-amber-600 font-medium' : ''}>{p.stock || 0}</span>
                       </span>
                     </div>
                     <div className="mt-3 flex gap-2">
@@ -289,7 +289,7 @@ function ProductFormDialog({
   onSaved: () => void;
 }) {
   // Initialize form with initial data only once when dialog opens
-  const [form, setForm] = useState<{ name: string; description: string; price: number; category: string; image: string; stock: number; labels: string[] | string; id?: string }>({ ...initial });
+  const [form, setForm] = useState<{ name: string; description: string; price: number | ""; category: string; image: string; stock: number | ""; labels: string[] | string; id?: string }>({ ...initial });
   const prevInitialId = useRef<string | undefined>(initial.id);
   
   // Reset form only when dialog opens with different product
@@ -456,15 +456,15 @@ function ProductFormDialog({
             </div>
             <div className="space-y-1.5">
               <Label>Price (₱)</Label>
-              <Input type="number" step="0.01" min={0} value={form.price} onChange={(e) => setForm(prev => ({ ...prev, price: Number(e.target.value) }))} disabled={saving} />
+              <Input type="number" step="0.01" min={0} placeholder="0" value={form.price} onChange={(e) => setForm(prev => ({ ...prev, price: e.target.value === "" ? "" : Number(e.target.value) }))} disabled={saving} />
             </div>
             <div className="space-y-1.5">
               <Label>Stock</Label>
-              <Input type="number" min={0} value={form.stock} onChange={(e) => setForm(prev => ({ ...prev, stock: Number(e.target.value) }))} disabled={saving} />
+              <Input type="number" min={0} placeholder="0" value={form.stock} onChange={(e) => setForm(prev => ({ ...prev, stock: e.target.value === "" ? "" : Number(e.target.value) }))} disabled={saving} />
             </div>
             <div className="space-y-1.5">
               <Label>Category</Label>
-              <Input value={form.category} onChange={(e) => setForm(prev => ({ ...prev, category: e.target.value }))} disabled={saving} />
+              <Input placeholder="chicken, pig, cattle..." value={form.category} onChange={(e) => setForm(prev => ({ ...prev, category: e.target.value }))} disabled={saving} />
             </div>
             <div className="space-y-1.5">
               <Label>Labels</Label>
