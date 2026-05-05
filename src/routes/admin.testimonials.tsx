@@ -9,8 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Loader2, Plus, Pencil, Trash2, Star, MessageSquareQuote, Search, User, Quote, Inbox } from "lucide-react";
 import { toast } from "sonner";
 
-// API Base URL - Production backend
-const API_URL = "https://alagavet-backend.onrender.com/api";
+// API Base URL
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 // Get token from localStorage
 const getToken = () => localStorage.getItem('admin_token');

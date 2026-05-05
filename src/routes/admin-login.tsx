@@ -5,8 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Loader2, Lock, Mail, Eye, EyeOff, Home } from "lucide-react";
 import { toast } from "sonner";
 
-// API Base URL - Production backend
-const API_URL = "https://alagavet-backend.onrender.com/api";
+// API Base URL - Use env var or fallback to local backend
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export const Route = createFileRoute("/admin-login")({
   component: AdminLoginPage,

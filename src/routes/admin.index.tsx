@@ -7,8 +7,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 
-// API Base URL - Production backend
-const API_URL = "https://alagavet-backend.onrender.com/api";
+// API Base URL
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 // Get token from localStorage
 const getToken = () => localStorage.getItem('admin_token');
