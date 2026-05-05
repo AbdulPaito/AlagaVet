@@ -14,7 +14,7 @@ import {
   CheckCircle2, Search, Egg, Beef, Bug, ShoppingBag,
 } from "lucide-react";
 
-export const Route = createFileRoute("/landing-page")({
+export const Route = createFileRoute("/")({
   component: Landing,
 });
 

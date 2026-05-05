@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { X, ShoppingBag, Truck, ShieldCheck, Package, Eye, Star, Sparkles, TrendingUp, Zap, Plus, ShoppingCart } from "lucide-react";
-import type { Product } from "@/routes/landing-page";
+import type { Product } from "@/routes/index";
 
 interface ProductDetailModalProps {
   product: Product | null;

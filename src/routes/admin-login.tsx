@@ -114,7 +114,7 @@ function AdminLoginPage() {
           {/* Landing page button */}
           <div className="mt-5 pt-5 border-t border-border/50">
             <Link 
-              to="/landing-page" 
+              to="/" 
               className="flex w-full items-center justify-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-muted/50 hover:text-foreground"
             >
               <Home className="h-4 w-4" />

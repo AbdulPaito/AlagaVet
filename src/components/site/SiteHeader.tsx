@@ -5,7 +5,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 glass">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link to="/landing-page" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <div
             className="flex h-9 w-9 items-center justify-center rounded-xl"
             style={{ background: "var(--gradient-primary)" }}
