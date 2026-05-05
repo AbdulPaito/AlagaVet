@@ -95,12 +95,12 @@ export function ProductDetailModal({
 
         <div className="grid md:grid-cols-2">
           {/* Image Section - Full width on mobile, half on desktop */}
-          <div className="relative bg-slate-100 w-full h-[300px] sm:h-[400px] md:h-auto md:min-h-[500px]">
+          <div className="relative bg-slate-100 w-full h-[350px] sm:h-[450px] md:h-[500px] flex-shrink-0">
             {!imageError && displayProduct.image ? (
               <img
                 src={displayProduct.image}
                 alt={displayProduct.name}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-contain bg-white"
                 onError={() => setImageError(true)}
               />
             ) : (
