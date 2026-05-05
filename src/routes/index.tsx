@@ -571,7 +571,7 @@ function FloatingContactButton() {
       </span>
       <div className="flex gap-2">
         <a
-          href="sms:+639176052089?body=Hi AlagaVet! I want to place an order. Product: [Product Name], Qty: [Quantity], Name: [Your Name], Address: [Your Address]. Please confirm availability. Thank you!"
+          href="sms:+639176052089"
           className="flex items-center gap-2 h-12 px-5 rounded-full bg-white text-emerald-700 font-semibold shadow-xl shadow-emerald-900/20 border border-emerald-100 hover:shadow-2xl hover:scale-105 transition-all"
         >
           <span className="text-lg">💬</span>
