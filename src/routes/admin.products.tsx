@@ -467,10 +467,11 @@ function ProductFormDialog({
               <Input value={form.category} onChange={(e) => setForm(prev => ({ ...prev, category: e.target.value }))} disabled={saving} />
             </div>
             <div className="space-y-1.5">
-              <Label>Labels (comma separated)</Label>
+              <Label>Labels</Label>
               <Input
                 value={Array.isArray(form.labels) ? form.labels.join(", ") : (form.labels as string || "")}
                 onChange={(e) => setForm(prev => ({ ...prev, labels: e.target.value }))}
+                placeholder="growth booster, swine, feed additive, vitamins"
                 disabled={saving}
               />
             </div>
