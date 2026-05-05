@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useAdminAuth, AdminAuthProvider } from "@/components/admin/AdminAuthProvider";
 import { Input } from "@/components/ui/input";
@@ -28,9 +28,11 @@ function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Already signed in as admin → redirect
-  if (!loading && user && isAdmin) {
-    navigate({ to: "/admin" });
-  }
+  useEffect(() => {
+    if (!loading && user && isAdmin) {
+      navigate({ to: "/admin" });
+    }
+  }, [loading, user, isAdmin, navigate]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();

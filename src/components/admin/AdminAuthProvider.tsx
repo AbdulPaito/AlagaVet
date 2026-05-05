@@ -36,9 +36,10 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
 
   // Load user on mount if token exists
   useEffect(() => {
+    let isMounted = true;
     async function loadUser() {
       if (!token) {
-        setLoading(false);
+        if (isMounted) setLoading(false);
         return;
       }
       try {
@@ -48,6 +49,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
           },
         });
         const data = await response.json();
+        if (!isMounted) return;
         if (data.success && data.user) {
           setUser(data.user);
           setIsAdmin(data.user.role === 'admin');
@@ -57,13 +59,15 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
           setToken(null);
         }
       } catch (error) {
+        if (!isMounted) return;
         localStorage.removeItem('admin_token');
         setToken(null);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
     loadUser();
+    return () => { isMounted = false; };
   }, [token]);
 
   async function signIn(email: string, password: string) {
