@@ -234,12 +234,12 @@ function ReviewsPage() {
               )}
             </div>
           )
-          : filteredItems?.map((t) => (
-              <article key={t.id} className="group rounded-2xl border bg-white p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+          : filteredItems?.map((review, index) => (
+              <article key={review.id || index} className="group rounded-2xl border bg-white p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                 {/* Quote Icon */}
                 <div className="flex items-start gap-3">
-                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${getAvatarColor(t.name)}`}>
-                    <span className="text-sm font-bold">{getInitials(t.name)}</span>
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${getAvatarColor(review.name)}`}>
+                    <span className="text-sm font-bold">{getInitials(review.name)}</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     {/* Stars */}
@@ -247,14 +247,14 @@ function ReviewsPage() {
                       {Array.from({ length: 5 }).map((_, k) => (
                         <Star 
                           key={k} 
-                          className={k < t.rating ? "h-4 w-4 fill-amber-400 text-amber-400" : "h-4 w-4 text-slate-200"} 
+                          className={k < review.rating ? "h-4 w-4 fill-amber-400 text-amber-400" : "h-4 w-4 text-slate-200"} 
                         />
                       ))}
                     </div>
                     {/* Message */}
                     <div className="relative">
                       <Quote className="absolute -left-1 -top-1 h-4 w-4 text-slate-200" />
-                      <p className="pl-4 text-sm leading-relaxed text-slate-700">{t.message}</p>
+                      <p className="pl-4 text-sm leading-relaxed text-slate-700">{review.message}</p>
                     </div>
                   </div>
                 </div>
@@ -262,24 +262,24 @@ function ReviewsPage() {
                 {/* Author */}
                 <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-sm">{t.name}</div>
-                    {t.location && <div className="text-xs text-muted-foreground">{t.location}</div>}
+                    <div className="font-semibold text-sm">{review.name}</div>
+                    {review.location && <div className="text-xs text-muted-foreground">{review.location}</div>}
                   </div>
                   <div className="flex gap-2">
                     <button 
-                      onClick={() => setEditing(t)} 
+                      onClick={() => setEditing(review)} 
                       className="h-8 w-8 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
                       title="Edit"
                     >
                       <Pencil className="h-3.5 w-3.5" />
                     </button>
                     <button 
-                      onClick={() => onDelete(t.id)} 
-                      disabled={deletingId === t.id} 
+                      onClick={() => onDelete(review.id)} 
+                      disabled={deletingId === review.id} 
                       className="h-8 w-8 flex items-center justify-center rounded-lg border border-red-200 text-red-500 hover:bg-red-50 disabled:opacity-50 transition-colors"
                       title="Delete"
                     >
-                      {deletingId === t.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+                      {deletingId === review.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
                     </button>
                   </div>
                 </div>
