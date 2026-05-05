@@ -159,11 +159,28 @@ export function ProductDetailModal({
             </p>
 
             {/* Full Description */}
-            <div className="max-h-[200px] overflow-y-auto mb-6">
+            <div className="max-h-[200px] overflow-y-auto mb-4">
               <p className="text-slate-600 leading-relaxed whitespace-pre-wrap break-words">
                 {displayProduct.description}
               </p>
             </div>
+
+            {/* Product Labels */}
+            {labels.filter(l => !["Best Seller", "Fast Moving", "New"].includes(l)).length > 0 && (
+              <div className="mb-4">
+                <p className="text-xs text-slate-500 mb-2">Labels:</p>
+                <div className="flex flex-wrap gap-2">
+                  {labels.filter(l => !["Best Seller", "Fast Moving", "New"].includes(l)).map((label, idx) => (
+                    <span 
+                      key={idx} 
+                      className="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-medium border border-slate-200"
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Trust badges */}
             <div className="grid grid-cols-3 gap-3 mb-6">
