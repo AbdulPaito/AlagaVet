@@ -30,30 +30,13 @@ configureCloudinary();
 // Security middleware
 app.use(helmet());
 
-// CORS - Allow multiple frontend origins
-const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
-  'http://localhost:5173',
-  'http://localhost:8080',
-  'http://localhost:3000',
-  'http://127.0.0.1:5173',
-  'https://alagavetsupply.vercel.app',
-  'https://alagavet.vercel.app',
-];
-
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-  })
-);
+// CORS - Allow all origins for now (fix for Render deployment)
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Rate limiting
 const limiter = rateLimit({
