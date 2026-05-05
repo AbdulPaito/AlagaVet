@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { OrderNowModal } from "@/components/site/OrderNowModal";
 
-// API Base URL
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+// API Base URL - Production backend
+const API_URL = "https://alagavet-backend.onrender.com/api";
 import { ImageLightbox } from "@/components/site/ImageLightbox";
 import { ProductDetailModal } from "@/components/site/ProductDetailModal";
 import { cn } from "@/lib/utils";

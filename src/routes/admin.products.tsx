@@ -10,8 +10,8 @@ import { Loader2, Plus, Pencil, Trash2, UploadCloud, ImageIcon, Search, Package,
 import { toast } from "sonner";
 import { ImageLightbox } from "@/components/site/ImageLightbox";
 
-// API Base URL
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+// API Base URL - Production backend
+const API_URL = "https://alagavet-backend.onrender.com/api";
 
 // Get token from localStorage
 const getToken = () => localStorage.getItem('admin_token');

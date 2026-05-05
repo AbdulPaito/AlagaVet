@@ -6,8 +6,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2, CheckCircle2, Truck, X, Phone, MapPin, MessageCircle, Package, Search, Inbox, Filter, RefreshCw, Trash2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
-// API Base URL
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+// API Base URL - Production backend
+const API_URL = "https://alagavet-backend.onrender.com/api";
 
 // Get token from localStorage
 const getToken = () => localStorage.getItem('admin_token');
