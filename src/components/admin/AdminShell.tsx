@@ -4,11 +4,11 @@ import { useAdminAuth } from "@/components/admin/AdminAuthProvider";
 import { LayoutDashboard, Package, ShoppingCart, MessageSquareQuote, LogOut, Loader2, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 
-const nav: { to: "/admin" | "/admin/orders" | "/admin/products" | "/admin/testimonials"; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
+const nav: { to: "/admin" | "/admin/orders" | "/admin/products" | "/admin/reviews"; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { to: "/admin/products", label: "Products", icon: Package },
-  { to: "/admin/testimonials", label: "Reviews", icon: MessageSquareQuote },
+  { to: "/admin/reviews", label: "Reviews", icon: MessageSquareQuote },
 ];
 
 export function AdminShell({ children }: { children: ReactNode }) {
