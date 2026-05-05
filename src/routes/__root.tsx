@@ -1,8 +1,6 @@
-import { Outlet, Link, createRootRouteWithContext, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRouteWithContext } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
-
-import appCss from "../styles.css?url";
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -31,40 +29,9 @@ function NotFoundComponent() {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AlagaVet Supply — Animal Health Products" },
-      { name: "description", content: "Premium veterinary medicines and animal health products for poultry, swine, and livestock. COD available, delivery across the Philippines only." },
-      { property: "og:title", content: "AlagaVet Supply — Animal Health Products" },
-      { property: "og:description", content: "Trusted animal health supply for Filipino farmers. Veterinary medicines, supplements, and feed additives delivered across the Philippines." },
-      { property: "og:type", content: "website" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/png", href: "/image/logo.png" },
-      { rel: "apple-touch-icon", href: "/image/logo.png" },
-    ],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
 });
-
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className="dark">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
