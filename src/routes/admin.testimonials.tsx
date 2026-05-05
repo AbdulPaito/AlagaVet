@@ -18,12 +18,12 @@ const getToken = () => localStorage.getItem('admin_token');
 export const Route = createFileRoute("/admin/testimonials")({
   component: () => (
     <AdminShell>
-      <TestimonialsPage />
+      <ReviewsPage />
     </AdminShell>
   ),
 });
 
-type Testimonial = {
+type Review = {
   id: string;
   name: string;
   location: string;
@@ -31,7 +31,7 @@ type Testimonial = {
   message: string;
 };
 
-const empty: Omit<Testimonial, "id"> = { name: "", location: "", rating: 5, message: "" };
+const empty: Omit<Review, "id"> = { name: "", location: "", rating: 5, message: "" };
 
 function getInitials(name: string) {
   return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
@@ -52,10 +52,10 @@ function getAvatarColor(name: string) {
   return colors[index];
 }
 
-function TestimonialsPage() {
-  const [items, setItems] = useState<Testimonial[] | null>(null);
-  const [filteredItems, setFilteredItems] = useState<Testimonial[] | null>(null);
-  const [editing, setEditing] = useState<Testimonial | "new" | null>(null);
+function ReviewsPage() {
+  const [items, setItems] = useState<Review[] | null>(null);
+  const [filteredItems, setFilteredItems] = useState<Review[] | null>(null);
+  const [editing, setEditing] = useState<Review | "new" | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [ratingFilter, setRatingFilter] = useState<number | 'All'>('All');
@@ -69,10 +69,10 @@ function TestimonialsPage() {
         },
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Failed to load testimonials');
-      const testimonialData = data.testimonials ?? [];
-      setItems(testimonialData);
-      setFilteredItems(testimonialData);
+      if (!response.ok) throw new Error(data.message || 'Failed to load reviews');
+      const reviewData = data.testimonials ?? [];
+      setItems(reviewData);
+      setFilteredItems(reviewData);
     } catch (error: any) {
       toast.error(error.message || 'Failed to load reviews');
       setItems([]);
@@ -100,7 +100,7 @@ function TestimonialsPage() {
   }, [items, ratingFilter, searchQuery]);
 
   async function onDelete(id: string) {
-    if (!confirm("Delete this testimonial?")) return;
+    if (!confirm("Delete this review?")) return;
     setDeletingId(id);
     try {
       const token = getToken();
@@ -111,11 +111,11 @@ function TestimonialsPage() {
         },
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Failed to delete testimonial');
+      if (!response.ok) throw new Error(data.message || 'Failed to delete review');
       toast.success("Deleted");
       load();
     } catch (error: any) {
-      toast.error(error.message || 'Failed to delete testimonial');
+      toast.error(error.message || 'Failed to delete review');
     } finally {
       setDeletingId(null);
     }
@@ -301,7 +301,7 @@ function TestimonialsPage() {
 function TForm({
   initial, onClose, onSaved,
 }: {
-  initial: Omit<Testimonial, "id"> & { id?: string };
+  initial: Omit<Review, "id"> & { id?: string };
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -334,7 +334,7 @@ function TForm({
       });
       
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Failed to save testimonial');
+      if (!response.ok) throw new Error(data.message || 'Failed to save review');
       
       toast.success("Saved");
       onSaved();

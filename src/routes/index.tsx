@@ -436,8 +436,8 @@ function HowItWorks() {
   );
 }
 
-/* ---------- testimonials ---------- */
-type Testimonial = {
+/* ---------- reviews ---------- */
+type Review = {
   id: string;
   name: string;
   location: string;
@@ -446,7 +446,7 @@ type Testimonial = {
 };
 
 function Reviews() {
-  const [testimonials, setReviews] = useState<Testimonial[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -466,7 +466,7 @@ function Reviews() {
       });
   }, []);
 
-  if (loading || testimonials.length === 0) return null;
+  if (loading || reviews.length === 0) return null;
 
   return (
     <section className="py-20 md:py-28 bg-white">
@@ -478,21 +478,21 @@ function Reviews() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {testimonials.map((t) => (
-            <article key={t.id} className="rounded-3xl bg-white border border-slate-200 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+          {reviews.map((review) => (
+            <article key={review.id} className="rounded-3xl bg-white border border-slate-200 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
               <div className="flex items-center gap-1 mb-3">
                 {Array.from({ length: 5 }).map((_, k) => (
-                  <Star key={k} className={k < t.rating ? "h-4 w-4 fill-amber-400 text-amber-400" : "h-4 w-4 text-slate-200"} />
+                  <Star key={k} className={k < review.rating ? "h-4 w-4 fill-amber-400 text-amber-400" : "h-4 w-4 text-slate-200"} />
                 ))}
               </div>
-              <p className="text-slate-700 leading-relaxed mb-4">"{t.message}"</p>
+              <p className="text-slate-700 leading-relaxed mb-4">"{review.message}"</p>
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 grid place-items-center text-white font-semibold text-sm">
-                  {t.name.charAt(0).toUpperCase()}
+                  {review.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900 text-sm">{t.name}</p>
-                  {t.location && <p className="text-xs text-slate-500">{t.location}</p>}
+                  <p className="font-semibold text-slate-900 text-sm">{review.name}</p>
+                  {review.location && <p className="text-xs text-slate-500">{review.location}</p>}
                 </div>
               </div>
             </article>
