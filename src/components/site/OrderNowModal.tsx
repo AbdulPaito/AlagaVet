@@ -82,7 +82,7 @@ export function OrderNowModal({ open, onOpenChange, productName }: Props) {
         throw new Error(data.message || "Could not submit your order");
       }
       
-      toast.success("Order submitted! Admin will call you for confirmation.");
+      toast.success("Order submitted! Admin will call you for confirmation.", { duration: 5000 });
       setForm({ customer_name: "", phone: "", address: "", product_name_input: "", quantity: 1, delivery_days: "5", message: "" });
       onOpenChange(false);
     } catch (error: any) {
