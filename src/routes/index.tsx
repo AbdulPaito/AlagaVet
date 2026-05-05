@@ -303,6 +303,22 @@ function ProductCard({ p, onView, onOrder, onViewDetail }: { p: Product; onView:
             </button>
           </div>
         </div>
+        
+        {/* Product Labels */}
+        {labels.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-slate-100">
+            <div className="flex flex-wrap gap-1.5">
+              {labels.filter(l => !["Best Seller", "Fast Moving", "New"].includes(l)).map((label, idx) => (
+                <span 
+                  key={idx} 
+                  className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );

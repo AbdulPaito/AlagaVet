@@ -94,7 +94,7 @@ export function OrderNowModal({ open, onOpenChange, productName }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md p-0 overflow-hidden">
+      <DialogContent className="max-w-md p-0 overflow-hidden sm:overflow-hidden overflow-y-auto max-h-[90vh]">
         {/* Gradient Header */}
         <div className="bg-gradient-to-br from-emerald-600 to-teal-600 px-6 py-5">
           <DialogHeader className="space-y-1">
