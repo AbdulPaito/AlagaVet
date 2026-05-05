@@ -326,7 +326,15 @@ function ProductCard({ p, onView, onOrder, onViewDetail }: { p: Product; onView:
 
 function Products({ products, onView, onOrder, onViewDetail }: { products: Product[] | null; onView: (s: string) => void; onOrder: (n: string) => void; onViewDetail: (p: Product) => void }) {
   const [filter, setFilter] = useState<string>("all");
-  const filtered = !products ? [] : filter === "all" ? products : products.filter((p) => p.category === filter);
+  const filtered = !products ? [] : (filter === "all" ? products : products.filter((p) => p.category === filter))
+    // Sort: Best Seller products first, then by name
+    .sort((a, b) => {
+      const aIsBestSeller = a.labels?.includes("Best Seller");
+      const bIsBestSeller = b.labels?.includes("Best Seller");
+      if (aIsBestSeller && !bIsBestSeller) return -1;
+      if (!aIsBestSeller && bIsBestSeller) return 1;
+      return a.name.localeCompare(b.name);
+    });
   const tabs = [
     { key: "all", label: "All Products" },
     { key: "chicken", label: "Poultry" },

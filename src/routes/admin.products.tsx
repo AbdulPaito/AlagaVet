@@ -475,6 +475,31 @@ function ProductFormDialog({
                 disabled={saving}
               />
             </div>
+            
+            {/* Best Seller Toggle */}
+            <div className="col-span-2 flex items-center gap-3 p-3 bg-rose-50 rounded-lg border border-rose-100">
+              <input
+                type="checkbox"
+                id="bestSeller"
+                checked={Array.isArray(form.labels) ? form.labels.includes("Best Seller") : (form.labels as string).includes("Best Seller")}
+                onChange={(e) => {
+                  const currentLabels = Array.isArray(form.labels) ? form.labels : (form.labels as string).split(",").map(s => s.trim()).filter(Boolean);
+                  if (e.target.checked) {
+                    if (!currentLabels.includes("Best Seller")) {
+                      setForm(prev => ({ ...prev, labels: [...currentLabels, "Best Seller"] }));
+                    }
+                  } else {
+                    setForm(prev => ({ ...prev, labels: currentLabels.filter(l => l !== "Best Seller") }));
+                  }
+                }}
+                disabled={saving}
+                className="h-5 w-5 rounded border-rose-300 text-rose-600 focus:ring-rose-500"
+              />
+              <label htmlFor="bestSeller" className="flex items-center gap-2 cursor-pointer">
+                <span className="text-sm font-semibold text-rose-700">🔥 Mark as Best Seller</span>
+                <span className="text-xs text-rose-600">- Featured at top of landing page</span>
+              </label>
+            </div>
           </div>
 
           <div className="flex justify-end gap-2">
