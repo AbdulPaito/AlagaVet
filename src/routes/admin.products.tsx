@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Loader2, Plus, Pencil, Trash2, UploadCloud, ImageIcon, Search, Package, Filter, Grid3X3, List, ExternalLink } from "lucide-react";
+import { Loader2, Plus, Pencil, Trash2, UploadCloud, ImageIcon, Search, AlertTriangle, Package, Filter, Grid3X3, List, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { ImageLightbox } from "@/components/site/ImageLightbox";
 
@@ -61,6 +61,7 @@ function ProductsPage() {
   const [editing, setEditing] = useState<Product | "new" | null>(null);
   const [zoom, setZoom] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("All");
 
@@ -116,7 +117,6 @@ function ProductsPage() {
   useEffect(() => { load(); }, []);
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this product?")) return;
     setDeletingId(id);
     try {
       const token = getToken();
@@ -134,6 +134,7 @@ function ProductsPage() {
       toast.error(error.message || 'Failed to delete product');
     } finally {
       setDeletingId(null);
+      setShowDeleteConfirm(null);
     }
   }
 
@@ -268,12 +269,12 @@ function ProductsPage() {
                         <Pencil className="h-3 w-3" /> Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(p.id)}
+                        onClick={() => setShowDeleteConfirm(p.id)}
                         disabled={deletingId === p.id}
                         className="inline-flex h-8 flex-1 items-center justify-center gap-1 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-xs transition-colors disabled:opacity-50"
                       >
                         {deletingId === p.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Trash2 className="h-3 w-3" />}
-                        Delete
+                        <span>Delete</span>
                       </button>
                     </div>
                   </div>
@@ -281,6 +282,45 @@ function ProductsPage() {
               );
             })}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-6 animate-in zoom-in-95 duration-200">
+            <div className="flex flex-col items-center text-center gap-3">
+              <div className="h-12 w-12 rounded-full bg-red-50 flex items-center justify-center border border-red-100">
+                <AlertTriangle className="h-6 w-6 text-red-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-slate-900">Delete Product?</h3>
+                <p className="text-sm text-slate-500 mt-1">
+                  This action cannot be undone. The product will be permanently removed.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShowDeleteConfirm(null)}
+                disabled={deletingId === showDeleteConfirm}
+                className="flex-1 h-11 inline-flex items-center justify-center rounded-xl border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDelete(showDeleteConfirm)}
+                disabled={deletingId === showDeleteConfirm}
+                className="flex-1 h-11 inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
+              >
+                {deletingId === showDeleteConfirm ? (
+                  <><Loader2 className="h-4 w-4 animate-spin" /> Deleting...</>
+                ) : (
+                  <><Trash2 className="h-4 w-4" /> Delete</>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {editing && (
         <ProductFormDialog

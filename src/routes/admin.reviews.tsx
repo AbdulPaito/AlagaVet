@@ -84,7 +84,10 @@ function ReviewsPage() {
         );
       }
       if (!response.ok) throw new Error(data.message || 'Failed to load reviews');
-      const reviewData = data.testimonials ?? [];
+      const reviewData = (data.testimonials ?? []).map((t: any) => ({
+        ...t,
+        id: t._id || t.id,
+      }));
       setItems(reviewData);
       setFilteredItems(reviewData);
     } catch (error: any) {
