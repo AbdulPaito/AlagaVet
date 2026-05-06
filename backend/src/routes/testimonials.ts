@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import { body, validationResult } from 'express-validator';
 import { Testimonial } from '../models';
 import { protect, adminOnly } from '../middleware/auth';
@@ -130,6 +131,11 @@ router.post(
 // @access  Private/Admin
 router.put('/:id', protect, adminOnly, async (req, res, next) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      res.status(404).json({ message: 'Testimonial not found' });
+      return;
+    }
+
     const testimonial = await Testimonial.findById(req.params.id);
 
     if (!testimonial) {
@@ -160,6 +166,11 @@ router.put('/:id', protect, adminOnly, async (req, res, next) => {
 // @access  Private/Admin
 router.put('/:id/approve', protect, adminOnly, async (req, res, next) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      res.status(404).json({ message: 'Testimonial not found' });
+      return;
+    }
+
     const testimonial = await Testimonial.findByIdAndUpdate(
       req.params.id,
       { isApproved: true },
@@ -186,6 +197,12 @@ router.put('/:id/approve', protect, adminOnly, async (req, res, next) => {
 // @access  Private/Admin
 router.delete('/:id', protect, adminOnly, async (req, res, next) => {
   try {
+    // Handle non-ObjectId IDs gracefully
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      res.status(404).json({ message: 'Testimonial not found' });
+      return;
+    }
+
     const testimonial = await Testimonial.findById(req.params.id);
 
     if (!testimonial) {
