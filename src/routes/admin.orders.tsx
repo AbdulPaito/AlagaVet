@@ -65,8 +65,10 @@ function OrdersPage() {
   const [confirmDeliveryDate, setConfirmDeliveryDate] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<OrderStatus | 'All'>('All');
   const [searchQuery, setSearchQuery] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
 
   async function load() {
+    setRefreshing(true);
     try {
       const token = getToken();
       const response = await fetch(`${API_URL}/orders`, {
@@ -74,7 +76,20 @@ function OrdersPage() {
           'Authorization': `Bearer ${token}`,
         },
       });
-      const data = await response.json();
+      if (response.status === 401) {
+        localStorage.removeItem('admin_token');
+        window.location.href = '/admin-login';
+        return;
+      }
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error(response.status === 429
+          ? 'Too many requests, please wait a moment and try again.'
+          : `Server error (${response.status})`
+        );
+      }
       if (!response.ok) throw new Error(data.message || 'Failed to load orders');
       const orderData = data.orders ?? [];
       setOrders(orderData);
@@ -83,6 +98,8 @@ function OrdersPage() {
       toast.error(error.message || 'Failed to load orders');
       setOrders([]);
       setFilteredOrders([]);
+    } finally {
+      setRefreshing(false);
     }
   }
 
@@ -176,8 +193,14 @@ function OrdersPage() {
           <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
           <p className="mt-1 text-muted-foreground">Manage and track customer orders.</p>
         </div>
-        <button onClick={load} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm hover:bg-muted/50 transition">
-          <RefreshCw className="h-4 w-4" /> Refresh
+        <button
+          type="button"
+          disabled={refreshing}
+          onClick={() => load()}
+          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-3 py-1.5 text-xs font-medium text-foreground shadow-sm transition hover:bg-muted/50 active:scale-95 disabled:opacity-50 cursor-pointer"
+        >
+          <RefreshCw className={`h-3.5 w-3.5 pointer-events-none ${refreshing ? 'animate-spin' : ''}`} />
+          {refreshing ? 'Loading...' : 'Refresh'}
         </button>
       </div>
 
@@ -318,7 +341,7 @@ function OrdersPage() {
                         className="inline-flex h-6 items-center gap-1 rounded bg-emerald-600 px-1.5 text-[11px] font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
                       >
                         {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <CheckCircle2 className="h-3 w-3" />}
-                        <span className="hidden sm:inline">Confirm</span>
+                        <span>Confirm</span>
                       </button>
                       <button
                         disabled={busy || o.status === "Delivered"}
@@ -326,15 +349,14 @@ function OrdersPage() {
                         className="inline-flex h-6 items-center gap-1 rounded border border-emerald-200 bg-emerald-50 px-1.5 text-[11px] font-medium text-emerald-700 transition hover:bg-emerald-100 disabled:opacity-50"
                       >
                         {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Truck className="h-3 w-3" />}
-                        <span className="hidden sm:inline">Deliver</span>
+                        <span>Deliver</span>
                       </button>
                       <button
                         disabled={busy || o.status === "Cancelled"}
                         onClick={() => setShowConfirmDialog({ id: o.id, status: "Cancelled" })}
                         className="inline-flex h-6 items-center gap-1 rounded border border-slate-200 bg-white px-1.5 text-[11px] font-medium text-slate-600 transition hover:bg-slate-50 disabled:opacity-50"
                       >
-                        <span className="hidden sm:inline">Cancel</span>
-                        <span className="sm:hidden">✕</span>
+                        <span>Cancel</span>
                       </button>
                       <div className="flex-1"></div>
                       <button

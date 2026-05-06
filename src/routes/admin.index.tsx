@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 // API Base URL
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
@@ -37,9 +38,22 @@ function Dashboard() {
         fetch(`${API_URL}/testimonials`, { headers }),
       ]);
 
-      const productsData = await productsRes.json();
-      const ordersData = await ordersRes.json();
-      const testimonialsData = await testimonialsRes.json();
+      // Handle auth errors silently
+      if (productsRes.status === 401 || ordersRes.status === 401 || testimonialsRes.status === 401) {
+        localStorage.removeItem('admin_token');
+        window.location.href = '/admin-login';
+        return;
+      }
+
+      let productsData, ordersData, testimonialsData;
+      try {
+        productsData = await productsRes.json();
+        ordersData = await ordersRes.json();
+        testimonialsData = await testimonialsRes.json();
+      } catch {
+        toast.error('Server returned invalid response. Please try again.');
+        return;
+      }
 
       const products = productsData.products || [];
       const orders = ordersData.orders || [];
@@ -112,7 +126,7 @@ function Dashboard() {
       color: "purple", 
       bgColor: "bg-purple-50",
       iconColor: "text-purple-600",
-      link: "/admin/testimonials"
+      link: "/admin/reviews"
     },
   ] : [];
 
@@ -272,7 +286,7 @@ function Dashboard() {
           </div>
           <ChevronRight className="h-5 w-5 text-muted-foreground" />
         </Link>
-        <Link to="/admin/testimonials" className="flex items-center gap-4 rounded-2xl border bg-white p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+        <Link to="/admin/reviews" className="flex items-center gap-4 rounded-2xl border bg-white p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-100">
             <Star className="h-6 w-6 text-purple-600" />
           </div>

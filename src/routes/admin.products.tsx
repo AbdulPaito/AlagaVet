@@ -72,7 +72,20 @@ function ProductsPage() {
           'Authorization': `Bearer ${token}`,
         },
       });
-      const data = await response.json();
+      if (response.status === 401) {
+        localStorage.removeItem('admin_token');
+        window.location.href = '/admin-login';
+        return;
+      }
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error(response.status === 429
+          ? 'Too many requests, please wait a moment and try again.'
+          : `Server error (${response.status})`
+        );
+      }
       if (!response.ok) throw new Error(data.message || 'Failed to load products');
       const productData = data.products ?? [];
       setItems(productData);
