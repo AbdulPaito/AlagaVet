@@ -262,10 +262,11 @@ function ProductCard({ p, onView, onOrder, onViewDetail }: { p: Product; onView:
         {p.image && (
           <button 
             onClick={(e) => { e.stopPropagation(); onView(p.image); }} 
-            className="absolute top-3 right-3 h-9 w-9 grid place-items-center rounded-full bg-white/90 backdrop-blur text-slate-700 shadow-md opacity-0 group-hover:opacity-100 transition translate-y-1 group-hover:translate-y-0 hover:bg-white" 
-            aria-label="Quick view"
+            className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-slate-700 text-xs font-semibold shadow-lg border border-slate-200 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all hover:scale-105 hover:bg-white" 
+            aria-label="View image"
           >
-            <Eye className="h-4 w-4" />
+            <Eye className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">View</span>
           </button>
         )}
       </div>
