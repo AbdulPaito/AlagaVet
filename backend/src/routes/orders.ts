@@ -58,6 +58,7 @@ router.get('/', protect, adminOnly, async (req, res, next) => {
       message: order.message || order.deliveryNote || '',
       status: order.status,
       created_at: order.createdAt.toISOString(),
+      estimated_delivery_date: order.estimatedDeliveryDate ? order.estimatedDeliveryDate.toISOString() : null,
     }));
 
     res.json({
@@ -162,7 +163,7 @@ router.put(
         return;
       }
 
-      const { status } = req.body;
+      const { status, estimatedDeliveryDate } = req.body;
       const order = await Order.findById(req.params.id);
 
       if (!order) {
@@ -178,6 +179,9 @@ router.put(
       }
 
       order.status = status;
+      if (estimatedDeliveryDate) {
+        order.estimatedDeliveryDate = new Date(estimatedDeliveryDate);
+      }
       await order.save();
 
       res.json({

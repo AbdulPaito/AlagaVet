@@ -33,7 +33,20 @@ type Order = {
   message: string;
   status: OrderStatus;
   created_at: string;
+  estimated_delivery_date?: string;
 };
+
+function formatOrderDate(dateStr: string): string {
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return '';
+    const datePart = date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
+    const timePart = date.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit', hour12: true });
+    return `${datePart} · ${timePart}`;
+  } catch {
+    return '';
+  }
+}
 
 const statusStyles: Record<OrderStatus, { bg: string; text: string; border: string; icon: string }> = {
   Pending: { bg: "bg-amber-50", text: "text-amber-700", border: "border-amber-200", icon: "🕐" },
@@ -49,6 +62,7 @@ function OrdersPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState<{ id: string; status: OrderStatus } | null>(null);
+  const [confirmDeliveryDate, setConfirmDeliveryDate] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<OrderStatus | 'All'>('All');
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -96,17 +110,21 @@ function OrdersPage() {
     return () => clearInterval(interval);
   }, []);
 
-  async function updateStatus(id: string, status: OrderStatus) {
+  async function updateStatus(id: string, status: OrderStatus, estimatedDeliveryDate?: string) {
     setPendingId(id);
     try {
       const token = getToken();
+      const body: any = { status };
+      if (estimatedDeliveryDate) {
+        body.estimatedDeliveryDate = estimatedDeliveryDate;
+      }
       const response = await fetch(`${API_URL}/orders/${id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify(body),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Failed to update status');
@@ -116,6 +134,7 @@ function OrdersPage() {
       toast.error(error.message || 'Failed to update status');
     } finally {
       setPendingId(null);
+      setConfirmDeliveryDate('');
     }
   }
 
@@ -223,10 +242,17 @@ function OrdersPage() {
           : filteredOrders?.map((o) => {
               const busy = pendingId === o.id;
               return (
-                <article key={o.id} className="bg-white rounded-lg border shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                  {/* Header - Order Code & Status */}
-                  <div className="bg-emerald-50/50 px-2.5 py-1.5 border-b flex items-center justify-between">
-                    <span className="font-mono text-[11px] font-semibold text-emerald-800">{o.code}</span>
+                <article key={o.id} className="group bg-white rounded-xl border border-slate-200/60 shadow-sm hover:shadow-md hover:border-emerald-200/50 transition-all duration-200 overflow-hidden">
+                  {/* Header - Order Code, Date & Status */}
+                  <div className="bg-emerald-50/50 px-2.5 py-1.5 border-b border-slate-100 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[11px] font-semibold text-emerald-800">{o.code}</span>
+                      {o.created_at && (
+                        <span className="text-[10px] text-slate-400">
+                          {formatOrderDate(o.created_at)}
+                        </span>
+                      )}
+                    </div>
                     <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-medium ${statusStyles[o.status].bg} ${statusStyles[o.status].text}`}>
                       {o.status}
                     </span>
@@ -244,6 +270,44 @@ function OrdersPage() {
                       <span className="flex items-center gap-0.5"><Phone className="h-3 w-3" />{o.phone}</span>
                       <span className="flex items-center gap-0.5"><MapPin className="h-3 w-3" />{o.address}</span>
                       <span className="flex items-center gap-0.5">📦 {o.quantity}</span>
+                      {o.estimated_delivery_date && o.status === 'Confirmed' && (
+                        <span className="flex items-center gap-0.5 text-emerald-600 font-medium">
+                          📅 Deliver by: {new Date(o.estimated_delivery_date).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      )}
+                      {o.status === 'Delivered' && o.estimated_delivery_date && (
+                        <span className="flex items-center gap-0.5 text-emerald-600 font-medium">
+                          📦 Delivered: {new Date(o.estimated_delivery_date).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Emoji Timeline - Clean & Simple */}
+                    <div className="flex items-center gap-1 mb-2 py-1">
+                      <div className="flex items-center gap-0.5">
+                        <span className="text-[10px]">🕐</span>
+                        <span className="text-[10px] text-slate-500">{new Date(o.created_at).toLocaleDateString('en-PH', { month: 'short', day: 'numeric' })}</span>
+                      </div>
+                      <span className="text-[10px] text-slate-300">→</span>
+                      <div className={`flex items-center gap-0.5 ${o.status === 'Pending' || o.status === 'Cancelled' ? 'opacity-40' : ''}`}>
+                        <span className="text-[10px]">✅</span>
+                        <span className={`text-[10px] ${o.status === 'Pending' || o.status === 'Cancelled' ? 'text-slate-400' : 'text-emerald-600 font-medium'}`}>
+                          {o.status === 'Pending' ? 'Pending' : 'Confirmed'}
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-slate-300">→</span>
+                      <div className={`flex items-center gap-0.5 ${o.status !== 'Delivered' ? 'opacity-40' : ''}`}>
+                        <span className="text-[10px]">🚚</span>
+                        <span className={`text-[10px] ${o.status === 'Delivered' ? 'text-emerald-600 font-medium' : 'text-slate-400'}`}>
+                          {o.status === 'Delivered' ? 'Delivered' : 'Delivery'}
+                        </span>
+                      </div>
+                      {o.status === 'Cancelled' && (
+                        <>
+                          <span className="text-[10px] text-slate-300">→</span>
+                          <span className="text-[10px] text-red-600 font-medium">❌ Cancelled</span>
+                        </>
+                      )}
                     </div>
 
                     {/* Action Buttons - Compact */}
@@ -351,19 +415,42 @@ function OrdersPage() {
                 <p className="text-sm text-muted-foreground">This action will update the order status.</p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mb-6">
+            <p className="text-sm text-muted-foreground mb-4">
               Are you sure you want to {showConfirmDialog.status === 'Confirmed' ? 'confirm' : showConfirmDialog.status === 'Delivered' ? 'mark as delivered' : 'cancel'} this order?
             </p>
+            
+            {/* Estimated Delivery Date - Only show when Confirming */}
+            {showConfirmDialog.status === 'Confirmed' && (
+              <div className="mb-6 p-3 bg-slate-50 rounded-lg border border-slate-200">
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  📅 Estimated Delivery Date
+                </label>
+                <input
+                  type="date"
+                  value={confirmDeliveryDate}
+                  onChange={(e) => setConfirmDeliveryDate(e.target.value)}
+                  min={new Date().toISOString().split('T')[0]}
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  Optional: Set when you expect to deliver this order
+                </p>
+              </div>
+            )}
+            
             <div className="flex gap-3">
               <button
-                onClick={() => setShowConfirmDialog(null)}
+                onClick={() => {
+                  setShowConfirmDialog(null);
+                  setConfirmDeliveryDate('');
+                }}
                 className="flex-1 px-4 py-2.5 rounded-lg border border-border text-sm font-medium hover:bg-muted/50 transition"
               >
                 No, Go Back
               </button>
               <button
                 onClick={() => {
-                  updateStatus(showConfirmDialog.id, showConfirmDialog.status);
+                  updateStatus(showConfirmDialog.id, showConfirmDialog.status, confirmDeliveryDate || undefined);
                   setShowConfirmDialog(null);
                 }}
                 disabled={pendingId === showConfirmDialog.id}

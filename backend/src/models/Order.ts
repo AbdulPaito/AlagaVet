@@ -97,9 +97,9 @@ const OrderSchema: Schema = new Schema(
   }
 );
 
-// Pre-save middleware to calculate estimated delivery date
+// Pre-save middleware to calculate estimated delivery date (only if not manually set)
 OrderSchema.pre('save', function (next) {
-  if (this.deliveryDays) {
+  if (this.deliveryDays && !this.estimatedDeliveryDate) {
     const date = new Date();
     date.setDate(date.getDate() + Number(this.deliveryDays));
     this.estimatedDeliveryDate = date;
