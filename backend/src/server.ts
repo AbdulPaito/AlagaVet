@@ -66,7 +66,7 @@ app.use('/api', routes);
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to AlagaVet API',
+    message: 'Welcome to Psalmer Agrivet Trading API',
     version: '1.0.0',
     status: 'running',
     documentation: '/api/health',

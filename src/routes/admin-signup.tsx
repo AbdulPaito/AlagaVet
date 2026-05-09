@@ -41,12 +41,12 @@ function SignupPage() {
         <div className="mb-8 flex flex-col items-center gap-3 text-center">
           <img 
             src="/image/logo.png" 
-            alt="AlagaVet Supply" 
+            alt="Psalmer Agrivet Trading" 
             className="h-16 w-16 object-contain" 
           />
           <div>
             <h1 className="text-xl font-bold tracking-tight text-slate-900">
-              Alaga<span className="text-emerald-600">Vet</span> Supply
+              Psalmer <span className="text-emerald-600">Agrivet</span> Trading
             </h1>
             <p className="text-sm text-emerald-600 mt-1">
               Animal Health Supply for Poultry, Swine & Livestock

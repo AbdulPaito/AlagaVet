@@ -9,7 +9,7 @@ import { ProductDetailModal } from "@/components/site/ProductDetailModal";
 import { cn } from "@/lib/utils";
 import {
   ShieldCheck, Truck, Wallet, Star, ArrowRight, Eye, Menu, X,
-  Phone, Mail, MapPin, Facebook, Instagram, Twitter, Sparkles,
+  Phone, Mail, MapPin, Facebook, Sparkles,
   PackageCheck, Stethoscope, Award, ChevronRight, PlayCircle,
   CheckCircle2, Search, Egg, Beef, Bug, ShoppingBag,
 } from "lucide-react";
@@ -61,12 +61,12 @@ function Header() {
         <a href="#home" className="flex items-center gap-3 group">
           <img 
             src="/image/logo.png" 
-            alt="AlagaVet Supply" 
+            alt="Psalmer Agrivet Trading" 
             className="h-10 w-10 md:h-12 md:w-12 object-contain rounded-full group-hover:scale-105 transition shadow-sm" 
           />
           <div className="leading-tight">
-            <p className="font-display font-bold text-lg md:text-xl text-slate-900">Alaga<span className="text-emerald-600">Vet</span></p>
-            <p className="text-[10px] text-slate-500 tracking-wide uppercase font-medium">SUPPLY</p>
+            <p className="font-display font-bold text-lg md:text-xl text-slate-900">Psalmer <span className="text-emerald-600">Agrivet</span></p>
+            <p className="text-[10px] text-slate-500 tracking-wide uppercase font-medium">TRADING</p>
           </div>
         </a>
 
@@ -153,7 +153,7 @@ function Hero() {
             </div>
             <div className="flex items-center gap-2 text-sm text-slate-700">
               <Phone className="h-4 w-4 text-emerald-600" />
-              <a href="tel:+639176052089" className="font-semibold hover:text-emerald-600 transition">📞 Call/Text: 0917-605-2089</a>
+              <a href="tel:+639175711077" className="font-semibold hover:text-emerald-600 transition">📞 Call/Text: 09175711077</a>
             </div>
             <div className="flex items-center gap-2 text-sm text-slate-700">
               <Wallet className="h-4 w-4 text-emerald-600" />
@@ -552,8 +552,8 @@ function CTA({ onOrder }: { onOrder: () => void }) {
             </div>
             <div className="flex flex-wrap gap-3">
               <button onClick={onOrder} className="inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-white text-emerald-700 font-bold hover:bg-emerald-50 transition shadow-lg">Order Now <ArrowRight className="h-4 w-4" /></button>
-              <a href="tel:+639176052089" className="inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-white/10 backdrop-blur border border-white/30 text-white font-semibold hover:bg-white/20 transition">
-                <Phone className="h-4 w-4" /> Call 0917-605-2089
+              <a href="tel:+639175711077" className="inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-white/10 backdrop-blur border border-white/30 text-white font-semibold hover:bg-white/20 transition">
+                <Phone className="h-4 w-4" /> Call 09175711077
               </a>
             </div>
           </div>
@@ -572,19 +572,19 @@ function FloatingContactButton() {
       </span>
       <div className="flex gap-2">
         <a
-          href="sms:+639176052089"
+          href="sms:+639175711077"
           className="flex items-center gap-2 h-12 px-5 rounded-full bg-white text-emerald-700 font-semibold shadow-xl shadow-emerald-900/20 border border-emerald-100 hover:shadow-2xl hover:scale-105 transition-all"
         >
           <span className="text-lg">💬</span>
           <span className="hidden sm:inline">Text</span>
         </a>
         <a
-          href="tel:+639176052089"
+          href="tel:+639175711077"
           className="flex items-center gap-2 h-12 px-5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold shadow-xl shadow-emerald-900/30 hover:shadow-2xl hover:scale-105 transition-all animate-pulse-slow"
         >
           <Phone className="h-5 w-5" />
           <span className="hidden sm:inline">Call Now</span>
-          <span className="sm:hidden">0917-605-2089</span>
+          <span className="sm:hidden">09175711077</span>
         </a>
       </div>
     </div>
@@ -597,45 +597,36 @@ function Footer() {
     <footer id="contact" className="bg-slate-950 text-slate-300">
       <Container className="py-16 grid md:grid-cols-4 gap-10">
         <div className="md:col-span-2">
-          <div className="flex flex-col items-start gap-4">
-            <div className="h-20 w-20 rounded-full overflow-hidden bg-white shadow-lg border-2 border-emerald-500/30">
-              <img src="/image/logo.png" alt="AlagaVet Supply" className="h-full w-full object-cover" />
+          <div className="flex items-center gap-4">
+            <div className="h-16 w-16 rounded-full overflow-hidden bg-white shadow-lg border-2 border-emerald-500/30">
+              <img src="/image/logo.png" alt="Psalmer Agrivet Trading" className="h-full w-full object-cover" />
             </div>
-            <p className="font-display font-bold text-2xl text-white">Alaga<span className="text-emerald-400">Vet</span></p>
+            <div>
+              <p className="font-display font-bold text-2xl text-white">Psalmer <span className="text-emerald-400">Agrivet</span></p>
+              <p className="text-xs text-emerald-500/80 uppercase tracking-wider font-medium mt-0.5">TRADING</p>
+            </div>
           </div>
-          <p className="text-sm text-slate-400 mt-3 max-w-sm leading-relaxed">Premium animal health products trusted by Filipino farmers. Veterinary-grade quality, delivered across the Philippines (Luzon, Visayas, Mindanao).</p>
-          <div className="flex gap-2 mt-5">
-            {[Facebook, Instagram, Twitter].map((I, i) => (
-              <a key={i} href="#" className="h-10 w-10 grid place-items-center rounded-xl bg-white/5 hover:bg-emerald-600 hover:text-white transition border border-white/10">
-                <I className="h-4 w-4" />
-              </a>
-            ))}
-          </div>
-        </div>
-        <div>
-          <p className="font-display font-bold text-white mb-4">Company</p>
-          <ul className="space-y-2.5 text-sm text-slate-400">
-            <li><a href="#" className="hover:text-emerald-400 transition">About Us</a></li>
-            <li><a href="#products" className="hover:text-emerald-400 transition">Products</a></li>
-            <li><a href="#categories" className="hover:text-emerald-400 transition">Categories</a></li>
-            <li><Link to="/admin-login" className="hover:text-emerald-400 transition">Admin Console</Link></li>
-          </ul>
+          <p className="text-sm text-slate-400 mt-4 max-w-sm leading-relaxed">Premium animal health products trusted by Filipino farmers. Veterinary-grade quality, delivered across the Philippines (Luzon, Visayas, Mindanao).</p>
+          <a href="https://www.facebook.com/share/1EK2YC1M3E/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-5 h-10 px-4 rounded-xl bg-white/5 hover:bg-emerald-600 hover:text-white transition border border-white/10 text-sm">
+            <Facebook className="h-4 w-4" />
+            <span>Follow us on Facebook</span>
+          </a>
         </div>
         <div>
           <p className="font-display font-bold text-white mb-4">Contact</p>
           <ul className="space-y-3 text-sm text-slate-400">
             <li className="flex items-start gap-2.5">
               <Phone className="h-4 w-4 mt-0.5 text-emerald-400" />
-              <a href="tel:+639176052089" className="hover:text-emerald-400 transition">0917-605-2089</a>
+              <a href="tel:+639175711077" className="hover:text-emerald-400 transition">09175711077</a>
             </li>
-            <li className="flex items-start gap-2.5"><Mail className="h-4 w-4 mt-0.5 text-emerald-400" /> hello@alagavet.ph</li>
+            <li className="flex items-start gap-2.5"><Mail className="h-4 w-4 mt-0.5 text-emerald-400" /> naighen1309@gmail.com</li>
             <li className="flex items-start gap-2.5"><MapPin className="h-4 w-4 mt-0.5 text-emerald-400" /> Luzon, Visayas, Mindanao</li>
           </ul>
         </div>
       </Container>
       <div className="border-t border-white/5">
         <Container className="py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} AlagaVet Animal Health Co. All rights reserved. | 💵 COD Available</p>
+          <p>© {new Date().getFullYear()} Psalmer Agrivet Trading. All rights reserved. | 💵 COD Available</p>
           <div className="flex gap-5">
             <a href="#" className="hover:text-emerald-400">Privacy</a>
             <a href="#" className="hover:text-emerald-400">Terms</a>

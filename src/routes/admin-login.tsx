@@ -71,13 +71,13 @@ function AdminLoginPage() {
             <div className="relative">
               <img 
                 src="/image/logo.png" 
-                alt="AlagaVet Supply" 
+                alt="Psalmer Agrivet Trading" 
                 className="h-18 w-18 object-contain rounded-full shadow-sm ring-2 ring-emerald-100 ring-offset-2" 
               />
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-slate-900">
-                Alaga<span className="text-emerald-600">Vet</span> Supply
+                Psalmer Agrivet Trading
               </h1>
               <p className="text-xs font-medium text-emerald-600/80 mt-1 uppercase tracking-wider">
                 Admin Portal

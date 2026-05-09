@@ -6,7 +6,7 @@ import cloudinary from '../config/cloudinary';
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'alagavet/products',
+    folder: 'psalmeragrivet/products',
     allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'svg'],
     transformation: [{ width: 800, height: 600, crop: 'limit' }],
   } as any,

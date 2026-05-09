@@ -68,10 +68,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
         <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-5">
           <img 
             src="/image/logo.png" 
-            alt="AlagaVet Supply" 
+            alt="Psalmer Agrivet Trading" 
             className="h-10 w-10 object-contain rounded-full shadow-sm" 
           />
-          <span className="font-bold">Alaga<span className="text-emerald-500">Vet</span> <span className="text-xs font-normal text-muted-foreground">Admin</span></span>
+          <span className="font-bold">Psalmer <span className="text-emerald-500">Agrivet</span> <span className="text-xs font-normal text-muted-foreground">Admin</span></span>
         </div>
         <nav className="flex-1 space-y-1 p-3 overflow-y-auto">
           {nav.map(({ to, label, icon: Icon, exact }) => {
@@ -119,10 +119,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <div className="md:hidden flex items-center gap-2">
             <img 
               src="/image/logo.png" 
-              alt="AlagaVet Supply" 
+              alt="Psalmer Agrivet Trading" 
               className="h-8 w-8 object-contain" 
             />
-            <span className="font-bold">Alaga<span className="text-emerald-500">Vet</span></span>
+            <span className="font-bold">Psalmer <span className="text-emerald-500">Agrivet</span></span>
           </div>
           {/* Mobile: Menu button */}
           <button 
@@ -141,10 +141,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 <div className="flex items-center gap-2">
                   <img 
                     src="/image/logo.png" 
-                    alt="AlagaVet Supply" 
+                    alt="Psalmer Agrivet Trading" 
                     className="h-8 w-8 object-contain" 
                   />
-                  <span className="font-bold">Alaga<span className="text-emerald-500">Vet</span></span>
+                  <span className="font-bold">Psalmer <span className="text-emerald-500">Agrivet</span></span>
                 </div>
                 <button 
                   onClick={() => setMobileMenuOpen(false)}
