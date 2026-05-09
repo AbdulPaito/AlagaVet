@@ -344,7 +344,7 @@ function OrdersPage() {
                         <span>Confirm</span>
                       </button>
                       <button
-                        disabled={busy || o.status === "Delivered"}
+                        disabled={busy || o.status !== "Confirmed"}
                         onClick={() => setShowConfirmDialog({ id: o.id, status: "Delivered" })}
                         className="inline-flex h-6 items-center gap-1 rounded border border-emerald-200 bg-emerald-50 px-1.5 text-[11px] font-medium text-emerald-700 transition hover:bg-emerald-100 disabled:opacity-50"
                       >
